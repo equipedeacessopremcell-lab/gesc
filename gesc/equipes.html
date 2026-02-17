@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>GESC • Gestão de Serviços e Contratos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonte -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/equipes.css">
+
+  <!-- AG GRID -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-grid.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css">
+  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+</head>
+
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <span class="logo-full">GESC</span>
+    </div>
+    <button class="toggle" onclick="toggleSidebar()">☰</button>
+  </div>
+
+<nav class="nav">
+
+  <a href="/index.html" class="active">
+    <span class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="3" y="3" width="7" height="7" rx="2"/>
+        <rect x="14" y="3" width="7" height="7" rx="2"/>
+        <rect x="14" y="14" width="7" height="7" rx="2"/>
+        <rect x="3" y="14" width="7" height="7" rx="2"/>
+      </svg>
+    </span>
+    <span class="label">Dashboard</span>
+  </a>
+
+  <a href="/cadastro.html">
+    <span class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M20 21a8 8 0 0 0-16 0"/>
+        <line x1="19" y1="8" x2="19" y2="14"/>
+        <line x1="16" y1="11" x2="22" y2="11"/>
+      </svg>
+    </span>
+    <span class="label">Cadastrar Empresa/Colaborador</span>
+  </a>
+
+  <a href="/empresas.html">
+    <span class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M3 21h18"/>
+        <path d="M5 21V7l8-4v18"/>
+        <path d="M19 21V11l-6-4"/>
+      </svg>
+    </span>
+    <span class="label">Empresas</span>
+  </a>
+
+  <a href="/colaborador.html">
+    <span class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="7" r="4"/>
+        <path d="M5.5 21a6.5 6.5 0 0 1 13 0"/>
+      </svg>
+    </span>
+    <span class="label">Colaboradores</span>
+  </a>
+
+  <a href="/equipes.html">
+    <span class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="9" cy="7" r="4"/>
+        <circle cx="17" cy="7" r="4"/>
+        <path d="M2 21a7 7 0 0 1 14 0"/>
+        <path d="M10 21a7 7 0 0 1 14 0"/>
+      </svg>
+    </span>
+    <span class="label">Equipes</span>
+  </a>
+
+</nav>
+</aside>
+
+<main class="main">
+  <h1 class="page-title">Equipes</h1>
+
+  <div class="grid-toolbar">
+    <button onclick="abrirCadastro()" class="btn-nova">
+      + Nova Equpe
+    </button>
+  </div>
+
+  <div id="empresasGrid" class="ag-theme-alpine grid-empresas"></div>
+
+  <footer>
+    Premcell • Consultoria em Telecomunicações Ltda.
+  </footer>
+</main>
+<!-- MODAL EQUIPE -->
+
+
+
+<!-- JS -->
+ 
+<script src="/assets/equipes.js"></script>
+<script>
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("collapsed");
+}
+</script>
+<!-- MODAL EQUIPE -->
+<div id="modalEquipe" class="modal hidden">
+
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h3 id="modalTitulo">Equipe</h3>
+      <button class="modal-close" onclick="fecharModal()">✖</button>
+    </div>
+
+    <div class="modal-body" id="modalBody">
+    </div>
+
+    <div class="modal-footer">
+      <button onclick="salvarMembrosEquipe()">Salvar</button>
+      <button onclick="fecharModal()">Cancelar</button>
+      
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL EDITAR EQUIPE -->
+<div id="modalEditarEquipe" class="modal hidden">
+
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h3>Editar Equipe</h3>
+      <button class="modal-close" onclick="fecharModalEditar()">✖</button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Empresa</label>
+          <input type="text" id="editEmpresa">
+        </div>
+
+        <div class="form-group">
+          <label>CNPJ</label>
+          <input type="text" id="editCnpj">
+        </div>
+
+        <div class="form-group">
+          <label>Modalidade</label>
+          <select id="editModalidade">
+            <option value="CLT">CLT</option>
+            <option value="PJ">PJ</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Equipe</label>
+          <input type="text" id="editNomeEquipe">
+        </div>
+
+        <div class="form-group">
+          <label>UF</label>
+          <input type="text" id="editUf">
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button onclick="salvarEdicaoEquipe()">Salvar</button>
+      <button onclick="fecharModalEditar()">Cancelar</button>
+ 
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

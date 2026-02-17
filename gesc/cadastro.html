@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>GESC • Gestão de Serviços e Contratos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <span class="logo-full">GESC</span>
+    </div>
+    <button class="toggle" onclick="toggleSidebar()">☰</button>
+  </div>
+
+<nav class="nav">
+
+  <a href="/index.html" class="active">
+    <span class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="3" y="3" width="7" height="7" rx="2"/>
+        <rect x="14" y="3" width="7" height="7" rx="2"/>
+        <rect x="14" y="14" width="7" height="7" rx="2"/>
+        <rect x="3" y="14" width="7" height="7" rx="2"/>
+      </svg>
+    </span>
+    <span class="label">Dashboard</span>
+  </a>
+
+  <a href="/cadastro.html">
+    <span class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M20 21a8 8 0 0 0-16 0"/>
+        <line x1="19" y1="8" x2="19" y2="14"/>
+        <line x1="16" y1="11" x2="22" y2="11"/>
+      </svg>
+    </span>
+    <span class="label">Cadastrar Empresa/Colaborador</span>
+  </a>
+
+  <a href="/empresas.html">
+    <span class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M3 21h18"/>
+        <path d="M5 21V7l8-4v18"/>
+        <path d="M19 21V11l-6-4"/>
+      </svg>
+    </span>
+    <span class="label">Empresas</span>
+  </a>
+
+  <a href="/colaborador.html">
+    <span class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="7" r="4"/>
+        <path d="M5.5 21a6.5 6.5 0 0 1 13 0"/>
+      </svg>
+    </span>
+    <span class="label">Colaboradores</span>
+  </a>
+
+  <a href="equipes.html">
+    <span class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="9" cy="7" r="4"/>
+        <circle cx="17" cy="7" r="4"/>
+        <path d="M2 21a7 7 0 0 1 14 0"/>
+        <path d="M10 21a7 7 0 0 1 14 0"/>
+      </svg>
+    </span>
+    <span class="label">Equipes</span>
+  </a>
+
+</nav>
+</aside>
+
+<main class="main">
+  <h1 class="page-title">Cadastrar Empresa / Colaborador</h1>
+
+  <div class="card" id="escolha">
+    <h3>O que deseja cadastrar?</h3>
+    <div class="choice-buttons">
+      <button class="btn-primary" onclick="selecionarTipo('colaborador')">Colaborador</button>
+      <button class="btn-primary" onclick="selecionarTipo('empresa')">Empresa</button>
+    </div>
+  </div>
+<div id="wizard-colaborador" class="wizard hidden">
+
+<!-- ================= ETAPA 1 ================= -->
+<div class="card step active">
+
+<h3>Etapa 1 — Informações Pessoais</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Nome Completo</label>
+<input type="text" name="nome" required>
+</div>
+
+<div class="form-group">
+<label>RG</label>
+<input type="text" name="rg" required>
+</div>
+
+<div class="form-group">
+<label>CPF</label>
+<input type="text" name="cpf" required>
+</div>
+
+<div class="form-group">
+<label>Contato</label>
+<input type="text" name="contato">
+</div>
+
+<div class="form-group">
+<label>E-mail</label>
+<input type="email" name="email_colaborador">
+</div>
+
+<div class="form-group">
+<label>Data de Nascimento</label>
+<input type="date" name="data_nascimento">
+</div>
+
+<div class="form-group">
+<label>Idade</label>
+<input type="number" name="idade">
+</div>
+
+<div class="form-group">
+<label>Efetivação</label>
+<input type="text" name="efetivacao">
+</div>
+
+<!--  NOVO SELECT -->
+<div class="form-group">
+<label>Tipo de Contratação</label>
+<select name="tipo_contratacao" onchange="toggleTipoContratacao(this)">
+<option value="">Selecione</option>
+<option value="clt">CLT</option>
+<option value="pj">PJ</option>
+</select>
+</div>
+
+<!--  CTPS (CLT) -->
+<div class="form-group hidden" id="campo-ctps">
+<label>CTPS</label>
+<input type="text" name="ctps">
+</div>
+
+<!--  CNPJ (PJ) -->
+<div class="form-group hidden" id="campo-cnpj">
+<label>CNPJ</label>
+<input type="text" name="cnpj_colaborador">
+</div>
+
+<div class="form-group">
+<label>Login Huawei</label>
+<input type="text" name="login_huawei">
+</div>
+
+<!-- STATUS DO COLABORADOR -->
+<div class="form-group">
+<label>Função do Colaborador</label>
+<select onchange="setStatus(this)">
+<option value="">Selecione</option>
+<option value="lider">Líder</option>
+<option value="instalador">Instalador</option>
+</select>
+<div class="status-badge hidden"></div>
+</div>
+
+<!-- STATUS DO COLABORADOR -->
+<div class="form-group">
+<label>Status do Colaborador</label>
+<select onchange="setStatus(this)">
+<option value="">Selecione</option>
+<option value="ativo">Ativo</option>
+<option value="inativo">Inativo</option>
+</select>
+<div class="status-badge hidden"></div>
+</div>
+
+</div>
+
+<!-- STATUS DA ETAPA -->
+<div class="etapa-status-box">
+<label>Status da Etapa</label>
+<select onchange="setStatusEtapa(this)">
+<option value="">Selecione</option>
+<option value="concluida">Concluída</option>
+<option value="nao">Não Concluída</option>
+<option value="tratativa">Em Tratativa</option>
+</select>
+<div class="etapa-badge hidden"></div>
+</div>
+
+<!-- BOTÕES -->
+<div class="wizard-actions">
+<button type="button" class="btn-secondary" onclick="salvar()">Salvar</button>
+<button type="button" class="btn-primary" onclick="proximaEtapa()">Próximo</button>
+</div>
+
+</div>
+
+<!-- ================= ETAPA 2 ================= -->
+<div class="card step">
+
+<h3>Etapa 2 — Risco Patrimonial</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>AC</label>
+<select name="ac">
+<option value="">Selecione</option>
+<option value="consta">Consta</option>
+<option value="nao_consta">Não Consta</option>
+<option value="nada_consta">Nada Consta</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Análise AC</label>
+<input type="text" name="analise_ac">
+</div>
+
+<div class="form-group">
+<label>JusBrasil AC</label>
+<input type="text" name="jusbrasil_ac">
+</div>
+
+<div class="form-group">
+<label>Análise Jus AC</label>
+<input type="text" name="analise_jus_ac">
+</div>
+
+<div class="form-group">
+<label>Risco Patrimonial</label>
+<input type="text" name="risco_patrimonial">
+</div>
+
+</div>
+
+<div class="etapa-status-box">
+<label>Status da Etapa</label>
+<select onchange="setStatusEtapa(this)">
+<option value="">Selecione</option>
+<option value="concluida">Concluída</option>
+<option value="nao">Não Concluída</option>
+<option value="tratativa">Em Tratativa</option>
+</select>
+<div class="etapa-badge hidden"></div>
+</div>
+
+<!-- BOTÕES -->
+<div class="wizard-actions">
+  <button type="button" class="btn-secondary" onclick="voltar()">Voltar</button>
+  <button type="button" class="btn-secondary" onclick="pular()">Pular</button>
+  <button type="button" class="btn-secondary" onclick="salvar()">Salvar</button>
+  <button type="button" class="btn-primary" onclick="proximaEtapa()">Próximo</button>
+</div>
+
+</div>
+
+<!-- ================= ETAPA 3 ================= -->
+<div class="card step">
+
+  <h3>Etapa 3 — Risco Operacional</h3>
+
+  <div class="form-grid">
+
+    <div class="form-group">
+      <label>Entrevistador Técnico</label>
+      <input type="text" name="entrevistador_tecnico">
+    </div>
+
+    <div class="form-group">
+      <label>Parecer Técnico</label>
+      <select name="parecer_tecnico">
+        <option value="">Selecione</option>
+        <option value="apto">Apto</option>
+        <option value="nao_apto">Não Apto</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Risco Operacional</label>
+      <input type="text" name="risco_operacional">
+    </div>
+
+  </div>
+
+  <!-- STATUS DA ETAPA -->
+  <div class="etapa-status-box">
+    <label>Status da Etapa</label>
+    <select onchange="setStatusEtapa(this)">
+      <option value="">Selecione</option>
+      <option value="concluida">Concluída</option>
+      <option value="nao">Não Concluída</option>
+      <option value="tratativa">Em Tratativa</option>
+    </select>
+    <div class="etapa-badge hidden"></div>
+  </div>
+
+  <!-- BOTÕES -->
+  <div class="wizard-actions">
+    <button type="button" class="btn-secondary" onclick="voltarEtapa()">Voltar</button>
+    <button type="button" class="btn-primary" onclick="proximaEtapa()">Próximo</button>
+  </div>
+
+</div>
+
+<!-- ================= ETAPA 4 ================= -->
+<div class="card step">
+
+<h3>Etapa 4 — Ficha de Segurança do Colaborador</h3>
+
+<div class="form-grid">
+
+<!-- NR10 -->
+<div class="form-group">
+<label>NR10</label>
+<select name="nr10">
+<option value="">Selecione</option>
+<option value="20h">20 Horas</option>
+<option value="40h">40 Horas</option>
+<option value="pendente">Pendente</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Data NR10</label>
+<input type="date" name="data_nr10">
+</div>
+
+<div class="form-group">
+<label>Validade NR10</label>
+<input type="date" name="validade_nr10">
+</div>
+
+<div class="form-group">
+<label>Status Validade NR10</label>
+<input type="text" name="status_validade_nr10">
+</div>
+
+<div class="form-group">
+<label>Status NR10</label>
+<input type="text" name="status_nr10">
+</div>
+
+<div class="form-group">
+<label>Verba Premcell</label>
+<input type="text" name="verba_premcell">
+</div>
+
+<!-- NR35 -->
+<div class="form-group">
+<label>NR35</label>
+<select name="nr35">
+<option value="">Selecione</option>
+<option value="8h">8 Horas</option>
+<option value="16h">16 Horas</option>
+<option value="pendente">Pendente</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Data NR35</label>
+<input type="date" name="data_nr35">
+</div>
+
+<div class="form-group">
+<label>Validade NR35</label>
+<input type="date" name="validade_nr35">
+</div>
+
+<div class="form-group">
+<label>Status Validade NR35</label>
+<input type="text" name="status_validade_nr35">
+</div>
+
+<div class="form-group">
+<label>Status NR35</label>
+<input type="text" name="status_nr35">
+</div>
+
+<div class="form-group">
+<label>Inspeção EPI</label>
+<input type="text" name="inspecao_epi">
+</div>
+
+<div class="form-group">
+<label>Inspeção Veicular</label>
+<input type="text" name="inspecao_veicular">
+</div>
+
+<div class="form-group">
+<label>Ficha de EPI</label>
+<input type="text" name="ficha_epi">
+</div>
+
+<div class="form-group">
+<label>OS</label>
+<input type="text" name="os">
+</div>
+
+<div class="form-group">
+<label>ASO</label>
+<input type="text" name="aso">
+</div>
+
+<div class="form-group">
+<label>Data ASO</label>
+<input type="date" name="data_aso">
+</div>
+
+<div class="form-group">
+<label>Status ASO</label>
+<input type="text" name="status_aso">
+</div>
+
+<div class="form-group">
+<label>Risco de Segurança</label>
+<input type="text" name="risco_seguranca">
+</div>
+
+</div>
+
+<div class="etapa-status-box">
+<label>Status da Etapa</label>
+<select onchange="setStatusEtapa(this)">
+<option value="">Selecione</option>
+<option value="concluida">Concluída</option>
+<option value="nao">Não Concluída</option>
+<option value="tratativa">Em Tratativa</option>
+</select>
+<div class="etapa-badge hidden"></div>
+</div>
+
+<!-- BOTÕES -->
+<div class="wizard-actions">
+  <button type="button" class="btn-secondary" onclick="voltar()">Voltar</button>
+  <button type="button" class="btn-secondary" onclick="pular()">Pular</button>
+  <button type="button" class="btn-secondary" onclick="salvar()">Salvar</button>
+  <button type="button" class="btn-primary" onclick="proximaEtapa()">Próximo</button>
+</div>
+
+</div>
+
+<!-- ================= ETAPA 5 ================= -->
+<div class="card step">
+
+<h3>Etapa 5 — Relação Contratual</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Ex Funcionário</label>
+<select name="ex_funcionario">
+<option value="">Selecione</option>
+<option value="sim">SIM</option>
+<option value="nao">NÃO</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Data do Desligamento</label>
+<input type="date" name="data_desligamento">
+</div>
+
+<div class="form-group">
+<label>Tempo do Desligamento</label>
+<input type="text" name="tempo_desligamento">
+</div>
+
+<div class="form-group">
+<label>Motivo</label>
+<input type="text" name="motivo">
+</div>
+
+<div class="form-group">
+<label>Tipo de Contratação</label>
+<select name="tipo_contratacao">
+<option value="">Selecione</option>
+<option value="formal">Formal</option>
+<option value="informal">Informal</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Data de Contrato</label>
+<input type="date" name="data_contrato">
+</div>
+
+<div class="form-group">
+<label>Tempo de Contrato</label>
+<input type="text" name="tempo_contrato">
+</div>
+
+<div class="form-group">
+<label>Forma de Pagamento</label>
+<input type="text" name="forma_pagamento">
+</div>
+
+<div class="form-group">
+<label>JUSBRASIL TRT</label>
+<input type="text" name="jusbrasil_trt">
+</div>
+
+<div class="form-group">
+<label>Análise JUS TRT</label>
+<input type="text" name="analise_jus_trt">
+</div>
+
+<div class="form-group">
+<label>Risco Trabalhista</label>
+<input type="text" name="risco_trabalhista">
+</div>
+
+</div>
+
+<!-- STATUS DA ETAPA 2 -->
+<div class="etapa-status-box">
+<label>Status da Etapa</label>
+<select onchange="setStatusEtapa(this)">
+<option value="">Selecione</option>
+<option value="concluida">Concluída</option>
+<option value="nao">Não Concluída</option>
+<option value="tratativa">Em Tratativa</option>
+</select>
+<div class="etapa-badge hidden"></div>
+</div>
+
+<!-- BOTÕES -->
+<div class="wizard-actions">
+  <button type="button" class="btn-secondary" onclick="voltar()">Voltar</button>
+  <button type="button" class="btn-secondary" onclick="pular()">Pular</button>
+  <button type="button" class="btn-secondary" onclick="salvar()">Salvar</button>
+  <button type="button" class="btn-primary" onclick="proximaEtapa()">Próximo</button>
+</div>
+
+</div>
+
+<!-- ================= ETAPA 6 ================= -->
+<div class="card step">
+
+<h3>Etapa 6 — Risco de Vida</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Contrato CSE</label>
+<select name="contrato_cse">
+<option value="">Selecione</option>
+<option value="aprovado">Aprovado</option>
+<option value="nao_aprovado">Não Aprovado</option>
+<option value="tratativa">Em Tratativa</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Data CSE</label>
+<input type="date" name="data_cse">
+</div>
+
+<div class="form-group">
+<label>Data de Vencimento</label>
+<input type="date" name="data_vencimento_cse">
+</div>
+
+<div class="form-group">
+<label>Anexo CSE</label>
+<input type="text" name="anexo_cse">
+</div>
+
+<div class="form-group">
+<label>Risco de Vida</label>
+<input type="text" name="risco_vida">
+</div>
+
+</div>
+
+<div class="etapa-status-box">
+<label>Status da Etapa</label>
+<select onchange="setStatusEtapa(this)">
+<option value="">Selecione</option>
+<option value="concluida">Concluída</option>
+<option value="nao">Não Concluída</option>
+<option value="tratativa">Em Tratativa</option>
+</select>
+<div class="etapa-badge hidden"></div>
+</div>
+
+<!-- BOTÕES -->
+<div class="wizard-actions">
+  <button type="button" class="btn-secondary" onclick="voltar()">Voltar</button>
+  <button type="button" class="btn-secondary" onclick="pular()">Pular</button>
+  <button type="button" class="btn-secondary" onclick="salvar()">Salvar</button>
+  <button type="button" class="btn-primary" onclick="proximaEtapa()">Próximo</button>
+</div>
+
+</div>
+
+
+<!-- ================= ETAPA 7 ================= -->
+<div class="card step">
+
+<h3>Etapa 7 — Disponibilidade</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Disponibilidade</label>
+<input type="date" name="disponibilidade">
+</div>
+
+<div class="form-group">
+<label>Observações</label>
+<input type="text" name="observacoes">
+</div>
+
+</div>
+
+<div class="etapa-status-box">
+<label>Status da Etapa</label>
+<select onchange="setStatusEtapa(this)">
+<option value="">Selecione</option>
+<option value="concluida">Concluída</option>
+<option value="nao">Não Concluída</option>
+<option value="tratativa">Em Tratativa</option>
+</select>
+<div class="etapa-badge hidden"></div>
+</div>
+
+<!-- BOTÕES -->
+<div class="wizard-actions">
+  <button type="button" class="btn-secondary" onclick="voltar()">Voltar</button>
+  <button type="button" class="btn-secondary" onclick="salvar()">Salvar</button>
+  <button type="button" class="btn-primary" onclick="cadastrar()">Cadastrar</button>
+</div>
+
+</div>
+</div>
+
+<!-- ===================== EMPRESA ===================== -->
+<div id="wizard-empresa" class="wizard hidden">
+
+  <div class="card step active">
+
+    <h3>Etapa 1 — Informações da Empresa</h3>
+
+    <div class="form-grid">
+
+    <div class="form-group">
+    <label>CNPJ</label>
+    <input 
+      type="text" 
+      name="cnpj" 
+      id="cnpj"
+      placeholder="Digite o CNPJ"
+      onblur="buscarCNPJ()"
+      >
+    </div>
+
+      <div class="form-group">
+        <label>Data de Abertura</label>
+        <input type="date" name="data_abertura">
+      </div>
+
+      <div class="form-group">
+        <label>Situação Empresarial</label>
+        <input type="text" name="situacao_empresarial">
+      </div>
+
+      <div class="form-group">
+        <label>Tipo</label>
+        <input type="text" name="tipo">
+      </div>
+
+      <div class="form-group">
+        <label>Nome da Empresa</label>
+        <input type="text" name="nome_empresa">
+      </div>
+
+      <div class="form-group">
+        <label>Nome Fantasia</label>
+        <input type="text" name="nome_fantasia">
+      </div>
+
+      <div class="form-group">
+        <label>Porte</label>
+        <input type="text" name="porte">
+      </div>
+
+      <div class="form-group">
+        <label>Natureza Jurídica</label>
+        <input type="text" name="natureza_juridica">
+      </div>
+
+      <div class="form-group">
+        <label>Atividade Principal</label>
+        <input type="text" name="atividade_principal">
+      </div>
+
+      <div class="form-group">
+        <label>Atividade Secundária</label>
+        <input type="text" name="atividade_secundaria">
+      </div>
+
+      <div class="form-group">
+        <label>Logradouro</label>
+        <input type="text" name="logradouro">
+      </div>
+
+      <div class="form-group">
+        <label>Número</label>
+        <input type="text" name="numero">
+      </div>
+
+      <div class="form-group">
+        <label>Município</label>
+        <input type="text" name="municipio">
+      </div>
+
+      <div class="form-group">
+        <label>Bairro</label>
+        <input type="text" name="bairro">
+      </div>
+
+      <div class="form-group">
+        <label>UF</label>
+        <input type="text" name="uf">
+      </div>
+
+      <div class="form-group">
+        <label>CEP</label>
+        <input type="text" name="cep">
+      </div>
+
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" name="email_empresa">
+      </div>
+
+      <div class="form-group">
+        <label>Telefone</label>
+        <input type="text" name="telefone">
+      </div>
+
+      <div class="form-group">
+        <label>Capital Social</label>
+        <input type="text" name="capital_social">
+      </div>
+
+      <div class="form-group">
+        <label>QSA</label>
+        <input type="text" name="qsa">
+      </div>
+
+      <div class="form-group">
+        <label>EFR</label>
+        <input type="text" name="efr">
+      </div>
+        <div class="form-group">
+        <label>Data Início Contrato</label>
+        <input type="date" name="data_inicio_contrato">
+      </div>
+
+    </div>
+
+    <!-- STATUS DA ETAPA (igual colaborador) -->
+    <div class="etapa-status-box">
+      <label>Status da Etapa</label>
+      <select onchange="setStatusEtapa(this)">
+        <option value="">Selecione</option>
+        <option value="concluida">Concluída</option>
+        <option value="nao">Não Concluída</option>
+        <option value="tratativa">Em Tratativa</option>
+      </select>
+      <div class="etapa-badge hidden"></div>
+    </div>
+
+    <!-- BOTÕES -->
+    <div class="wizard-actions">
+      <button type="button" class="btn-secondary" onclick="pesquisar()">Pesquisar</button>
+      <button type="button" class="btn-primary" onclick="cadastrar()">Cadastrar</button>
+    </div>
+
+  </div>
+
+</div>
+
+  <footer>
+    Premcell • Consultoria em Telecomunicações Ltda.
+  </footer>
+</main>
+<script src="/assets/cadastro.js"></script>
+<script>
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("collapsed");
+}
+</script>
+</body>
+</html>
